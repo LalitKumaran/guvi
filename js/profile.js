@@ -58,5 +58,6 @@ function load(){
       url: 'http://localhost/guvi/php/profile.php',
     });
     localStorage.clear();
+    $redis-flushall();
     window.location.href = './index.html';
   }
