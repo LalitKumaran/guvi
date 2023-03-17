@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/login.css">  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body onload=load()>
+    <div class="container">
+      <form id="login-form">
+        <div class="title">Login</div>
+        <div class="input-box underline">
+          <input type="email" id="email" name="email" placeholder="Enter your MailID" required>
+          <div class="underline"></div>
+        </div>
+        <div class="input-box">
+          <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+          <div class="underline"></div>
+        </div>
+        <div class="input-box">
+          <input type="button" onclick=login()  value="Login"/>
+        </div>
+      </form>
+      <form>
+        <div class="input-box">
+          <p>New user?</p>
+          <input class="submit" type="button" onclick=newuser() value="Register">
+        </div>
+      </form>
+    </div>
+  </body>
+  <script src="./js/login.js"></script>
+</html>
