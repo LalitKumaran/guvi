@@ -1,7 +1,8 @@
 <?php
-
 require 'index.php';
 function profile(){
+   global $redis;
+   global $client;
    global $usercollection;
    if(isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['age']) && isset($_POST['mobile'])) {
    try{
@@ -27,24 +28,22 @@ function profile(){
         echo 'no user';
         exit();
     }
-    // $email = $redis->get('user');
-    // $_SESSION["email"] = $email;
-    // $doc = $usercollection->findOne(['email' => $email]);
-    // $data = array(
-    //     'email' => $email,
-    //     'name' => $doc['name'],
-    //     'age' => $doc['age'],
-    //     'dob' => $doc['dob'],
-    //     'mobile' => $doc['mobile'],
-    //     'session_id' => session_id()
-    // );
-    // echo json_encode($data);
+    $email = $redis->get('user');
+    $doc = $usercollection->findOne(['email' => $email]);
+    $data = array(
+        'email' => $email,
+        'name' => $doc['name'],
+        'age' => $doc['age'],
+        'dob' => $doc['dob'],
+        'mobile' => $doc['mobile'],
+        'session_id' => session_id()
+    );
+    echo json_encode($data);
 
-    // }else{
-    //     session_destroy();
-    //     // $redis->flushall();
-    // }
-}
+    }else{
+        session_destroy();
+        $redis->flushall();
+    }
 }
 ?>
 

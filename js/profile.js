@@ -7,7 +7,7 @@ function upadate(){
         mobile: $("#mobile").val(),
         action: "profile",
     };
-
+      console.log($("#age").val())
       $.ajax({
         url: 'http://localhost/guvi/php/profile.php',
         type: 'post',
@@ -55,7 +55,7 @@ function load(){
   function logout() {
     $.ajax({
       type: 'GET',
-      url: './php/profile.php',
+      url: 'http://localhost/guvi/php/profile.php',
     });
     localStorage.clear();
     window.location.href = './index.html';

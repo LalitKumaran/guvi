@@ -1,14 +1,12 @@
 <?php
 require './index.php';
-// require '../vendor/autoload.php';
 
 function register(){
     global $conn;
-    // global $client;
+    global $redis;
+    global $client;
 
-    // // $client = new MongoDB\Client;
-    // $usercollection = $client->userdb->usercollection;
-    $redis = new Predis\Client();
+    $usercollection = $client->userdb->usercollection;
     if($redis->get('user')){
       echo "Session Exists";
     }
@@ -40,15 +38,15 @@ function register(){
     $stmt = $conn->prepare("INSERT INTO users VALUES('', ? , ? )");
     $stmt->bind_param("ss",$email,$password);
     if($stmt->execute()){
-      // $result = $usercollection->insertOne([
-      //     "email" => $email ,
-      //     "fname" => '',
-      //     "lname" => '',
-      //     "age" => '',
-      //     "mobile" => '',
+      $result = $usercollection->insertOne([
+          "email" => $email ,
+          "fname" => '',
+          "lname" => '',
+          "age" => '',
+          "mobile" => '',
 
-      // ]);
-      // echo $result;
+      ]);
+      echo $result;
       echo "Registration Successful";
     }
     else{
