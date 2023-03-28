@@ -17,26 +17,44 @@ function login(){
           session_start();
           $row = $user->fetch_assoc();
           if($password == $row['password']){
-            $redis->set('user' , $email);
-            $updateResult = $usercollection->updateOne(
-            ["email" => $email],
-            ['$set' =>  ['sessionid' => session_id() ]]
-            );
+            $redis->set('email' , $email);
+            $result = $usercollection->findOne(["email" => $email]);
+            $redis->set('fname' , $result['fname']);
+            $redis->set('lname' , $result['lname']);
+            $redis->set('age' , $result['age']);
+            $redis->set('mobile' , $result['mobile']);
             // echo session_id();
-            echo "Login Successful";
+            $response = array(
+              'msg'   => "Login Successful",
+              "session_id" => session_id()
+          );
+            $json_data = json_encode($response);
+            echo $json_data;
           }
           else{
-            echo "Wrong Password";
-            exit;
+            $response = array(
+              'msg'   => "Wrong Password",
+          );
+            $json_data = json_encode($response);
+            echo $json_data;
+            exit();
           }
       }
       else{
-        echo "User Not Registered";
-        exit;
+        $response = array(
+          'msg'   => "User Not Registered",
+      );
+        $json_data = json_encode($response);
+        echo $json_data;
+        exit();
       }
     }
     else{
-      echo "Error : ".$stmt->error;
+      $response = array(
+        'msg'   => "Error : ".$stmt->error,
+    );
+      $json_data = json_encode($response);
+      echo $json_data;
     }
   }
 ?>

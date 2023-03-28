@@ -1,16 +1,12 @@
 <?php
 require './index.php';
-
 function register(){
     global $conn;
     global $redis;
     global $client;
 
     $usercollection = $client->userdb->usercollection;
-    if($redis->get('user')){
-      echo "Session Exists";
-    }
-    else{
+
     $email = $_POST["email"];
     $password = $_POST["password"];
     if(empty($email)){
@@ -35,23 +31,26 @@ function register(){
       echo "Error : ".$user->error;
     }
     // $password=hash('sha512',$password);
+    if($redis->exists('email')){
+      session_start();
+      $redis->flushall();
+      session_destroy();
+    }
     $stmt = $conn->prepare("INSERT INTO users VALUES('', ? , ? )");
     $stmt->bind_param("ss",$email,$password);
     if($stmt->execute()){
       $result = $usercollection->insertOne([
           "email" => $email ,
-          "fname" => '',
-          "lname" => '',
-          "age" => '',
-          "mobile" => '',
+          "fname" => 'Nil',
+          "lname" => 'Nil',
+          "age" => 'Nil',
+          "mobile" => 'Nil',
 
       ]);
-      echo $result;
       echo "Registration Successful";
     }
     else{
       echo "Error : ".$stmt->error;
     }
-}
 }
 ?>

@@ -15,6 +15,9 @@ if(isset($_POST["action"])){
     else if($_POST["action"] == "profile"){
         profile();
     }
+    else if($_POST["action"] == "logout"){
+        logout();
+    }
 }
 
 ?>

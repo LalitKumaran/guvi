@@ -1,29 +1,22 @@
-function upadate(){
-    $(document).ready(function(){
+function update(){
       var data = {
-        fname: $("#fname").val(),
-        lname: $("#lname").val(),
-        age: $("#age").val(),
-        mobile: $("#mobile").val(),
+        fname: $("#fname").text(),
+        lname: $("#lname").text(),
+        age: $("#age").text(),
+        mobile: $("#mobile").text(),
         action: "profile",
-    };
-      console.log($("#age").val())
+      }
       $.ajax({
         url: 'http://localhost/guvi/php/profile.php',
-        type: 'post',
+        type: 'POST',
         data: data,
         success:function(response){
           alert(response);
           if(response == "Updated Successfully"){
-            document.getElementById("update-form").hidden = true;
             window.location.reload();
           }
         }
       });
-    });
-  }
-function loadform(){
-    document.getElementById("update-form").hidden = false;
 }
 
 function load(){
@@ -31,19 +24,21 @@ function load(){
     type:'POST',
     url: 'http://localhost/guvi/php/profile.php',
     data: {
-        sessionId: localStorage.getItem('session_id') ? localStorage.fetItem('session_id')
+        session_id: localStorage.getItem('session_id') ? localStorage.getItem('session_id')
         : 'empty',
+        action:"profile"
     },
     success: function (response) {
-      if (!response.includes('no user')) {
-      var data = JSON.parse(response);
-      $('#fname').text(data['fname']);
-      $('#lname').text(data['lname']);
-      $('#age').text(data['age']);
-      $('#mobile').text(data['mobile']);
+      if (response.includes('User Not Found')) {
+        location.href = './register.html'
       }
       else{
-        location.href = './register.html'
+        var data = JSON.parse(response);
+      $('#fname').text(data['fname']);
+      $('#lname').text(data['lname']);
+      $('#email').text(data['email']);
+      $('#age').text(data['age']);
+      $('#mobile').text(data['mobile']);
       }
     },
       error: function (xhr, status, error) {
@@ -54,10 +49,19 @@ function load(){
 
   function logout() {
     $.ajax({
-      type: 'GET',
-      url: 'http://localhost/guvi/php/profile.php',
-    });
-    localStorage.clear();
-    $redis-flushall();
-    window.location.href = './index.html';
+      type: 'POST',
+      data:{action:"logout"},
+      url: 'http://localhost/guvi/php/logout.php',
+      success: function(response){
+        if(response == "Logged out"){
+          localStorage.clear();
+          alert("Session Expired")
+          window.location.href = './index.html';
+        }
+      },
+      error:function (xhr, status, error) {
+        console.log(xhr, status, error)
+      },
+      }
+    );
   }

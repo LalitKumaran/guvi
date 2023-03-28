@@ -22,9 +22,10 @@ function login(){
         type: 'post',
         data: data,
         success:function(response){
-          alert(response);
-          if(response == "Login Successful"){
-            localStorage.setItem('session_id', response);
+          var data = JSON.parse(response)
+          alert(data["msg"]);
+          if(data["msg"] == "Login Successful"){
+            localStorage.setItem('session_id',data['session_id']);
             window.location.href = './profile.html';
           }
         }
